@@ -1,7 +1,3 @@
-export {}
+// Type definitions for GLIS Dashboard
+// React types are provided by @types/react
 
-declare global {
-  namespace React {
-    interface ReactNode {}
-  }
-}
