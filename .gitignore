@@ -1,0 +1,85 @@
+# Ghana Legal Scraper - Project .gitignore
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Data files (generated during scraping)
+data/raw/**/*.html
+data/raw/**/*.pdf
+data/processed/ghasc_cases.db
+data/logs/*.log
+data/logs/*.jsonl
+data/stats/*.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Dependencies lock files (optional)
+# poetry.lock
+# Pipfile.lock
+
+# Node.js (if using any frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
