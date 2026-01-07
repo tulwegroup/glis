@@ -26,16 +26,29 @@ class LegalDocument(BaseModel):
 class GhanaLegalVectorStore:
     def __init__(self, persist_dir: str = "./chroma_db"):
         """Initialize Chroma vector store (free, local alternative to Pinecone)"""
-        self.embeddings = OpenAIEmbeddings(
-            model="text-embedding-3-small",
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
+        openai_key = os.getenv("OPENAI_API_KEY")
         
-        self.vectorstore = Chroma(
-            embedding_function=self.embeddings,
-            persist_directory=persist_dir,
-            collection_name="ghana-legal-knowledge"
-        )
+        if not openai_key:
+            print("⚠️ WARNING: OPENAI_API_KEY not set. Vector store features will be limited.")
+            self.embeddings = None
+            self.vectorstore = None
+            return
+        
+        try:
+            self.embeddings = OpenAIEmbeddings(
+                model="text-embedding-3-small",
+                api_key=openai_key
+            )
+            
+            self.vectorstore = Chroma(
+                embedding_function=self.embeddings,
+                persist_directory=persist_dir,
+                collection_name="ghana-legal-knowledge"
+            )
+        except Exception as e:
+            print(f"⚠️ Vector store initialization failed: {e}")
+            self.embeddings = None
+            self.vectorstore = None
         
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
@@ -48,6 +61,10 @@ class GhanaLegalVectorStore:
         Ingest Ghana's key statutes
         CRITICAL: Start with these 20 core statutes
         """
+        if not self.vectorstore:
+            print("⚠️ Vector store not initialized. Skipping statute ingestion.")
+            return
+        
         statutes = [
             # Constitutional Framework
             {
@@ -208,6 +225,10 @@ class GhanaLegalVectorStore:
     
     def ingest_customary_law(self):
         """Ingest Ghana's Customary Law Principles"""
+        if not self.vectorstore:
+            print("⚠️ Vector store not initialized. Skipping customary law ingestion.")
+            return
+        
         customary_principles = [
             # Akan/Ashanti Customary Law
             {
@@ -341,6 +362,10 @@ class GhanaLegalVectorStore:
     
     def semantic_search(self, query: str, k: int = 5):
         """Search vector store semantically"""
+        if not self.vectorstore:
+            print("⚠️ Vector store not available. Returning empty results.")
+            return []
+        
         results = self.vectorstore.similarity_search_with_score(query, k=k)
         
         return [

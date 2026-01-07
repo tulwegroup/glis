@@ -63,13 +63,28 @@ async def root():
 @app.on_event("startup")
 async def startup_event():
     """Initialize vector store on app startup"""
+    print("\n" + "="*60)
+    print("🚀 GLIS v4.0 Starting up...")
+    print("="*60)
+    
+    # Log environment
+    has_openai_key = bool(os.getenv("OPENAI_API_KEY"))
+    print(f"✓ OPENAI_API_KEY set: {has_openai_key}")
+    print(f"✓ Python version: {sys.version}")
+    print(f"✓ Working directory: {os.getcwd()}")
+    
+    # Initialize vector store (will handle missing keys gracefully)
     from reasoning.vector_store import initialize_vector_store
     try:
         initialize_vector_store()
         print("✅ Vector store initialized successfully")
     except Exception as e:
-        print(f"⚠️ Vector store initialization warning: {e}")
-        # Don't fail startup if vector store fails
+        print(f"⚠️ Vector store initialization failed (non-blocking): {str(e)}")
+        logger.warning(f"Vector store init error: {e}", exc_info=True)
+    
+    print("="*60)
+    print("✅ GLIS v4.0 is READY")
+    print("="*60 + "\n")
 
 logging.basicConfig(
     level=logging.INFO,
