@@ -1,18 +1,49 @@
 """
-Main entry point for Ghana Legal Scraper
+GLIS v4.0 - Cognitive Legal Assistant API
+Ghana's AI-powered legal intelligence system
 Run with: python main.py
 """
 import logging
 import sys
 from pathlib import Path
 import argparse
+import os
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from scraper.crawler import GhanaLegalCrawler
-from api.main import app
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from api.semantic_search import router as semantic_search_router
 import uvicorn
+
+# Initialize FastAPI app for v4.0
+app = FastAPI(
+    title="GLIS v4.0 - Cognitive Legal Assistant",
+    description="AI-powered legal intelligence system for Ghana",
+    version="4.0.0"
+)
+
+# CORS middleware for frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "healthy",
+        "version": "4.0.0",
+        "service": "GLIS - Cognitive Legal Assistant"
+    }
+
+# Include routers
+app.include_router(semantic_search_router)
 
 
 logging.basicConfig(

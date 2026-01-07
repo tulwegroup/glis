@@ -1,0 +1,44 @@
+# Add these to your requirements.txt or create new file:
+
+# Core AI/LLM
+openai>=1.0.0
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.10
+
+# Vector Database
+pinecone-client>=3.0.0
+# OR Chroma (free alternative):
+chromadb>=0.4.0
+
+# Document Processing
+pypdf>=3.17.0
+python-pptx>=0.6.21
+python-docx>=0.8.11
+pytesseract>=0.3.10
+pillow>=10.0.0
+
+# Audio Processing
+openai-whisper>=20230314
+librosa>=0.10.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+pydantic>=2.0.0
+
+# Web Scraping (for GhanaLII ingestion)
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+selenium>=4.13.0
+
+# Judge Analytics
+scikit-learn>=1.3.0
+
+# Optional: Customary Law NLP
+transformers>=4.34.0
+
+# Web Framework (already installed)
+fastapi>=0.104.0
+uvicorn>=0.24.0
+sqlalchemy>=2.0.0
