@@ -45,6 +45,31 @@ async def health_check():
 # Include routers
 app.include_router(semantic_search_router)
 
+# Root endpoint
+@app.get("/")
+async def root():
+    return {
+        "name": "GLIS v4.0",
+        "description": "Ghana Legal Intelligence System - Cognitive Legal Assistant",
+        "version": "4.0.0",
+        "endpoints": {
+            "health": "/health",
+            "semantic_search": "/api/search/semantic",
+            "docs": "/docs"
+        }
+    }
+
+# Startup event - Initialize vector store
+@app.on_event("startup")
+async def startup_event():
+    """Initialize vector store on app startup"""
+    from reasoning.vector_store import initialize_vector_store
+    try:
+        initialize_vector_store()
+        print("✅ Vector store initialized successfully")
+    except Exception as e:
+        print(f"⚠️ Vector store initialization warning: {e}")
+        # Don't fail startup if vector store fails
 
 logging.basicConfig(
     level=logging.INFO,
@@ -134,14 +159,14 @@ def main():
 
     elif args.command == 'api':
         logger.info("=" * 70)
-        logger.info("GHANA LEGAL SCRAPER - API SERVER")
+        logger.info("GLIS v4.0 - COGNITIVE LEGAL ASSISTANT API")
         logger.info("=" * 70)
         logger.info(f"Starting API on {args.host}:{args.port}")
         logger.info(f"Visit: http://{args.host}:{args.port}/docs for API documentation")
 
         try:
             uvicorn.run(
-                'api.main:app',
+                'main:app',
                 host=args.host,
                 port=args.port,
                 reload=args.reload,

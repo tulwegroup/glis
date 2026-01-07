@@ -1,0 +1,12 @@
+{
+  "id": "glis-backend",
+  "name": "GLIS v4.0 Backend",
+  "description": "Ghana Legal Intelligence System - Cognitive Legal Assistant",
+  "builder": "nixpacks",
+  "buildCommand": "pip install -r requirements.txt",
+  "startCommand": "python main.py api --host 0.0.0.0 --port ${PORT:-8000}",
+  "enviroment": {
+    "PYTHONUNBUFFERED": "1",
+    "PORT": "8000"
+  }
+}
